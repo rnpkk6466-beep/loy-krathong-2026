@@ -1,66 +1,768 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090d27">
-<meta name="description" content="ร่วมลอยกระทงออนไลน์ ส่งคำอธิษฐานไปกับสายน้ำแห่งความทรงจำ">
-<title>MAGICAL LOY KRATHONG 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สุขสันต์วันลอยกระทง</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- SweetAlert2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-image: url('https://s.imgz.io/2026/11/23/Loykrathong367a21b5b9f10a13.png');
+      --gold-gradient: linear-gradient(180deg, #FFE169 0%, #F5A623 100%);
+      --glass-bg: rgba(16, 24, 64, 0.72);
+      --glass-border: rgba(255, 215, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Prompt', sans-serif;
+      background-color: #070d2d;
+    }
+
+    .scene-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background-image: linear-gradient(to bottom, rgba(7, 13, 45, 0.25), rgba(7, 13, 45, 0.45)), var(--bg-image);
+      background-size: cover;
+      background-position: center bottom;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .pill-badge {
+      pointer-events: auto;
+      background: rgba(15, 22, 58, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 215, 0, 0.5);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-sound {
+      cursor: pointer;
+    }
+
+    .btn-sound:hover {
+      background: rgba(35, 48, 110, 0.9);
+      transform: scale(1.05);
+    }
+
+    .river-area {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 52%;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* ตัวกระทงที่ลอยอยู่ในน้ำพร้อมเอฟเฟ็กต์ */
+    .floating-krathong {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      pointer-events: auto;
+      animation: floatAcross linear infinite, waveMotion 5s ease-in-out infinite;
+      transition: transform 0.4s ease, filter 0.4s ease;
+    }
+
+    .floating-krathong:hover {
+      z-index: 99 !important;
+      transform: scale(1.12);
+      filter: drop-shadow(0 0 18px rgba(255, 225, 105, 0.95));
+    }
+
+    .floating-krathong.just-launched {
+      animation: floatAcross linear infinite, waveMotion 5s ease-in-out infinite, newLaunchGlow 3.5s ease-out;
+    }
+
+    .krathong-name-tag {
+      background: rgba(12, 18, 48, 0.85);
+      border: 1px solid rgba(255, 215, 0, 0.7);
+      color: #fff;
+      padding: 3px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      margin-bottom: 5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      text-shadow: 0 1px 2px #000;
+      z-index: 2;
+    }
+
+    .krathong-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .krathong-img {
+      position: relative;
+      z-index: 2;
+      width: 95px;
+      height: auto;
+      animation: candleGlow 2.2s ease-in-out infinite alternate;
+    }
+
+    .water-ripple {
+      position: absolute;
+      bottom: 2px;
+      width: 85%;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 245, 190, 0.55);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+      z-index: 1;
+      animation: rippleExpand 3.5s ease-out infinite;
+      pointer-events: none;
+    }
+
+    .water-ripple.delay-2 {
+      animation-delay: 1.75s;
+    }
+
+    @keyframes floatAcross {
+      0% { left: -160px; }
+      100% { left: calc(100vw + 160px); }
+    }
+
+    @keyframes waveMotion {
+      0%, 100% {
+        transform: translateY(0px) rotate(-1.8deg);
+      }
+      50% {
+        transform: translateY(-8px) rotate(1.8deg);
+      }
+    }
+
+    @keyframes candleGlow {
+      0% {
+        filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 -2px 6px rgba(255, 210, 80, 0.35));
+      }
+      100% {
+        filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 -4px 14px rgba(255, 230, 120, 0.85));
+      }
+    }
+
+    @keyframes rippleExpand {
+      0% {
+        transform: scale(0.75);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(1.65);
+        opacity: 0;
+      }
+    }
+
+    @keyframes newLaunchGlow {
+      0% {
+        filter: drop-shadow(0 0 28px rgba(255, 230, 100, 1)) brightness(1.25);
+      }
+      100% {
+        filter: drop-shadow(0 0 0px rgba(255, 230, 100, 0)) brightness(1);
+      }
+    }
+
+    .welcome-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 90px 20px 55px;
+      pointer-events: none;
+    }
+
+    .hero-title-box {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .hero-title {
+      font-family: 'Prompt', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.3rem, 5.5vw, 4.3rem);
+      background: linear-gradient(180deg, #FFF6B7 0%, #F6C23E 60%, #D9820B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.75));
+      margin-bottom: 5px;
+    }
+
+    .hero-subtitle {
+      color: #fff;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+    }
+
+    .btn-gold {
+      pointer-events: auto;
+      background: var(--gold-gradient);
+      color: #2b1800;
+      font-weight: 700;
+      font-size: 1.15rem;
+      border: 2px solid #FFF2A6;
+      border-radius: 50px;
+      padding: 12px 38px;
+      box-shadow: 0 6px 20px rgba(245, 166, 35, 0.5), inset 0 2px 4px rgba(255,255,255,0.6);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.75);
+      color: #1a0e00;
+    }
+
+    .btn-gold:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-krathong-icon {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+      transition: transform 0.25s ease;
+    }
+
+    .btn-gold:hover .btn-krathong-icon {
+      transform: scale(1.15) rotate(-6deg);
+    }
+
+    .btn-dark-pill {
+      pointer-events: auto;
+      background: rgba(15, 22, 58, 0.82);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-weight: 500;
+      font-size: 1rem;
+      border: 1.5px solid rgba(255, 215, 0, 0.5);
+      border-radius: 50px;
+      padding: 12px 26px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-dark-pill:hover {
+      background: rgba(30, 42, 98, 0.95);
+      border-color: #FFD700;
+    }
+
+    .glass-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(5, 10, 30, 0.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 24px;
+      width: 100%;
+      max-width: 780px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65);
+      color: #fff;
+    }
+
+    .glass-card-sm {
+      max-width: 460px;
+    }
+
+    .modal-heading {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: #FFE169;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      margin-bottom: 18px;
+    }
+
+    .krathong-option {
+      background: rgba(255, 255, 255, 0.07);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 14px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .krathong-option:hover {
+      background: rgba(255, 215, 0, 0.14);
+      border-color: rgba(255, 215, 0, 0.6);
+      transform: translateY(-3px);
+    }
+
+    .krathong-option.selected {
+      background: rgba(255, 215, 0, 0.24);
+      border-color: #FFD700;
+      box-shadow: 0 0 18px rgba(255, 215, 0, 0.45);
+    }
+
+    .krathong-option img {
+      width: 115px;
+      height: 115px;
+      object-fit: contain;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 5px 8px rgba(0,0,0,0.45));
+    }
+
+    .krathong-option-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #f8f9fa;
+    }
+
+    .custom-label {
+      color: #FFE169;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .custom-input {
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 12px 15px;
+      font-size: 1rem;
+      color: #1a1a1a;
+      width: 100%;
+    }
+
+    .custom-input:focus {
+      outline: none;
+      border-color: #FFD700;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+    }
+
+    .bottom-action-bar {
+      position: fixed;
+      bottom: 28px;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 0 15px;
+    }
+
+    .swal2-popup {
+      background: #131c4e !important;
+      color: #fff !important;
+      border: 1.5px solid #FFD700 !important;
+      border-radius: 20px !important;
+      font-family: 'Prompt', sans-serif !important;
+    }
+
+    .swal2-title {
+      color: #FFE169 !important;
+    }
+  </style>
 </head>
 <body>
-<div class="sky">
-  <div class="moon"></div><div class="stars" id="stars"></div>
-  <div class="temple">✦</div>
-  <header class="topbar"><a class="brand" href="#">✧ MAGICAL <span>LOY KRATHONG</span></a><div class="top-actions"><span class="live-dot"></span><span>LIVE FESTIVAL</span><button id="soundBtn" class="icon-btn" aria-label="เปิดหรือปิดเสียง">♫</button></div></header>
-  <main>
-    <section class="hero">
-      <div class="eyebrow">✧ THE FESTIVAL OF LIGHT & WISHES ✧</div>
-      <h1>MAGICAL <span>LOY KRATHONG</span></h1>
-      <h2>ลอยกระทงออนไลน์ <i>คืนวันเพ็ญแห่งคำอธิษฐาน</i></h2>
-      <p class="intro">หนึ่งคำอธิษฐาน หนึ่งกระทง หนึ่งความทรงจำ<br>ร่วมสืบสานประเพณีไทยไปด้วยกัน</p>
-      <button class="primary-btn" id="openRegister">🪷 ร่วมลอยกระทงออนไลน์ <span>→</span></button>
-      <div class="stats">
-        <div><strong id="totalCount">—</strong><small>กระทงที่ลอยแล้ว</small></div>
-        <div class="stat-sep"></div>
-        <div><strong id="wishCount">—</strong><small>คำอธิษฐาน</small></div>
-        <div class="stat-sep"></div>
-        <div><strong id="todayCount">—</strong><small>ร่วมลอยวันนี้</small></div>
-      </div>
-    </section>
-    <section class="river-section">
-      <div class="river-heading"><span>✧ THE WISHING RIVER ✧</span><h3>สายน้ำแห่งคำอธิษฐาน</h3><p>ทุกกระทง คือหนึ่งความหวังที่กำลังเดินทาง</p></div>
-      <div class="river-wrap"><canvas id="riverCanvas" aria-label="แม่น้ำและกระทงลอย"></canvas><div class="river-glow"></div><div class="river-hint">แตะกระทงเพื่ออ่านคำอธิษฐาน</div></div>
-      <div class="wish-strip" id="wishStrip"><span>✧</span> คำอธิษฐานจะปรากฏที่นี่เมื่อมีผู้ร่วมกิจกรรม</div>
-    </section>
-    <section class="how"><div class="eyebrow">A LITTLE WISH, A LOT OF MAGIC</div><h3>ร่วมลอยกระทงง่าย ๆ ใน 3 ขั้นตอน</h3><div class="steps"><article><b>01</b><span>🪷</span><h4>เลือกกระทง</h4><p>เลือกกระทงดอกไม้ในแบบที่คุณชอบ</p></article><article><b>02</b><span>💫</span><h4>ส่งคำอธิษฐาน</h4><p>ฝากความปรารถนาดีไว้กับสายน้ำ</p></article><article><b>03</b><span>🌕</span><h4>ลอยไปพร้อมกัน</h4><p>กระทงของคุณจะปรากฏบนแม่น้ำทันที</p></article></div></section>
-  </main>
-  <footer>MAGICAL LOY KRATHONG 2026 <span>✧ สืบสานประเพณีไทยอย่างสร้างสรรค์ ✧</span></footer>
-</div>
 
-<div class="modal-backdrop" id="registerModal" aria-hidden="true">
- <div class="modal">
-  <button class="close-btn" id="closeRegister" aria-label="ปิด">×</button>
-  <div class="eyebrow">MAKE A WISH TONIGHT</div><h3>ร่วมลอยกระทงออนไลน์</h3><p class="muted">เลือกกระทง ฝากคำอธิษฐาน แล้วปล่อยให้ความหวังลอยไป</p>
-  <form id="registerForm">
-   <label>ชื่อผู้ร่วมกิจกรรม <em>*</em><input name="name" maxlength="60" required placeholder="ชื่อของคุณ"></label>
-   <label>จังหวัด <input name="province" maxlength="80" placeholder="เช่น นนทบุรี"></label>
-   <label>เลือกกระทงของคุณ</label>
-   <div class="krathong-options">
-    <label class="kr-option selected"><input type="radio" name="type" value="pink" checked><span class="flower pink">✿</span><small>บัวชมพู</small></label>
-    <label class="kr-option"><input type="radio" name="type" value="white"><span class="flower white">✿</span><small>บัวขาว</small></label>
-    <label class="kr-option"><input type="radio" name="type" value="purple"><span class="flower purple">✿</span><small>บัวม่วง</small></label>
-    <label class="kr-option"><input type="radio" name="type" value="banana"><span class="flower banana">❀</span><small>ใบตอง</small></label>
-   </div>
-   <label>คำอธิษฐานของคุณ <textarea name="wish" maxlength="300" rows="3" placeholder="ขอให้ปีนี้..."></textarea></label>
-   <label class="checkline"><input type="checkbox" name="isPublic" checked> อนุญาตให้แสดงคำอธิษฐานบนสายน้ำ (ไม่แสดงจังหวัด)</label>
-   <button class="primary-btn submit-btn" type="submit" id="submitBtn">🪷 ยืนยันการลอยกระทง</button>
-   <p class="tiny-note">ข้อมูลของคุณใช้เพื่อร่วมกิจกรรมนี้เท่านั้น</p>
-  </form>
- </div>
-</div>
-<div class="toast" id="toast" role="status"></div>
-<iframe name="gasFrame" id="gasFrame" hidden></iframe>
-<script>window.MLK_CONFIG={API_URL:"https://script.google.com/macros/s/AKfycbyF2YvfdCRjk7DsyJxq_kQwsOe3hr_NYa4BOGJVbSsuf0fq9IJv3-2B1YnE3I2Cj1Ar/exec"};</script>
-<script src="assets/js/app.js"></script>
-</body></html>
+  <audio id="bgMusic" loop>
+    <source src="https://rnpkk6466-beep.github.io/music/Loy%20Krathong.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="scene-container">
+    <div class="top-bar">
+      <div class="pill-badge" id="counterBadge" style="visibility: hidden;">
+        <span>🪷 กระทงในแม่น้ำ <strong id="krathongCount" class="text-warning">0</strong> ใบ</span>
+      </div>
+
+      <button class="pill-badge btn-sound" id="soundToggleBtn" onclick="toggleSound()">
+        <i class="fa-solid fa-volume-xmark text-warning" id="soundIcon"></i>
+        <span id="soundText">เสียง</span>
+      </button>
+    </div>
+
+    <div class="river-area" id="riverArea"></div>
+
+    <div class="welcome-overlay" id="welcomeScreen">
+      <div class="hero-title-box">
+        <h1 class="hero-title">สุขสันต์วันลอยกระทง</h1>
+        <p class="hero-subtitle">ขอให้ทุกความสุขลอยเข้ามาในชีวิต ✨</p>
+      </div>
+
+      <button class="btn-gold d-inline-flex align-items-center justify-content-center gap-2" onclick="openSelectModal()">
+        <img src="https://s.imgz.io/2026/11/23/krathong1d96fdd44be5f625d.png" alt="กระทง" class="btn-krathong-icon">
+        <span>เริ่มลอยกระทง</span>
+      </button>
+    </div>
+
+    <div class="glass-modal" id="selectModal">
+      <div class="glass-card">
+        <h2 class="modal-heading">เลือกกระทงของคุณ</h2>
+
+        <div class="row g-3" id="krathongGrid"></div>
+
+        <div class="text-center mt-4 d-flex justify-content-center gap-2">
+          <button class="btn-dark-pill" onclick="closeAllModals()">ยกเลิก</button>
+          <button class="btn-gold" id="confirmKrathongBtn" disabled onclick="openWishModal()">
+            ยืนยันกระทง
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-modal" id="wishModal">
+      <div class="glass-card glass-card-sm">
+        <div class="text-center mb-3">
+          <img id="selectedPreviewImg" src="" alt="กระทงที่เลือก" style="width: 135px; height: 135px; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));">
+        </div>
+
+        <div class="mb-3">
+          <label class="custom-label">ชื่อผู้ลอยกระทง</label>
+          <input type="text" id="userName" class="custom-input" maxlength="40" placeholder="ระบุชื่อของคุณ (หรือเว้นว่างไว้)">
+        </div>
+
+        <div class="mb-2">
+          <label class="custom-label">คำอธิษฐาน</label>
+          <textarea id="userWish" class="custom-input" rows="3" maxlength="300" placeholder="พิมพ์คำอธิษฐานขอพร..." oninput="updateCharCount()"></textarea>
+          <div class="text-end small text-light mt-1 opacity-75">
+            <span id="charCount">0</span>/300
+          </div>
+        </div>
+
+        <div class="d-grid gap-2 mt-3">
+          <button class="btn-gold w-100" id="submitFloatBtn" onclick="submitKrathong()">
+            นำกระทงลงลอยน้ำ
+          </button>
+          <button class="btn-dark-pill w-100" onclick="backToSelect()">
+            ← เลือกกระทงใหม่
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-action-bar" id="riverActionBar">
+      <button class="btn-gold d-inline-flex align-items-center justify-content-center gap-2" onclick="openSelectModal()">
+        <img src="https://s.imgz.io/2026/11/23/krathong1d96fdd44be5f625d.png" alt="กระทง" class="btn-krathong-icon">
+        <span>เริ่มลอยกระทง</span>
+      </button>
+      <button class="btn-dark-pill" onclick="showAllWishes()">
+        📜 ดูคำอธิษฐาน
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    // นำ Web App URL ของ Google Apps Script มาใส่ตรงนี้
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxKcvSsepTKp56zFWQQdbSDdBpuqYgDxGgcRqmHfJNOvSafeorkwGhNd_udvwGlRqox/exec';
+
+    const KRATHONG_LIST = [
+      { id: '1', name: 'บัวม่วง', img: 'https://s.imgz.io/2026/11/23/krathong1d96fdd44be5f625d.png' },
+      { id: '2', name: 'มะลิขาว', img: 'https://s.imgz.io/2026/11/23/krathong27b09a2c4279b80b6.png' },
+      { id: '3', name: 'ดาวเรืองบานชื่น', img: 'https://s.imgz.io/2026/11/23/krathong360c71e0a5c6b6768.png' },
+      { id: '4', name: 'บัวชมพู', img: 'https://s.imgz.io/2026/11/23/krathong4251dad732733eb1c.png' },
+      { id: '5', name: 'บัวสามชั้น', img: 'https://s.imgz.io/2026/11/23/krathong51dc1254be99c121e.png' },
+      { id: '6', name: 'กล้วยไม้ใบตอง', img: 'https://s.imgz.io/2026/11/23/krathong6114611a34e726843.png' }
+    ];
+
+    let selectedKrathong = null;
+    let allKrathongsData = [];
+    let isPlaying = false;
+
+    window.onload = function() {
+      renderKrathongGrid();
+      loadRiverData();
+      setInterval(loadRiverData, 20000);
+    };
+
+    function renderKrathongGrid() {
+      const grid = document.getElementById('krathongGrid');
+      grid.innerHTML = KRATHONG_LIST.map(item => `
+        <div class="col-6 col-md-4">
+          <div class="krathong-option" id="k-opt-${item.id}" onclick="selectKrathong('${item.id}')">
+            <img src="${item.img}" alt="${item.name}">
+            <div class="krathong-option-title">${item.name}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectKrathong(id) {
+      selectedKrathong = KRATHONG_LIST.find(k => k.id === id);
+      document.querySelectorAll('.krathong-option').forEach(el => el.classList.remove('selected'));
+      document.getElementById(`k-opt-${id}`).classList.add('selected');
+      document.getElementById('confirmKrathongBtn').disabled = false;
+    }
+
+    function openSelectModal() {
+      playMusicAuto();
+      document.getElementById('welcomeScreen').style.display = 'none';
+      document.getElementById('riverActionBar').style.display = 'none';
+      document.getElementById('wishModal').style.display = 'none';
+      document.getElementById('selectModal').style.display = 'flex';
+      document.getElementById('counterBadge').style.visibility = 'visible';
+    }
+
+    function openWishModal() {
+      if (!selectedKrathong) return;
+      document.getElementById('selectedPreviewImg').src = selectedKrathong.img;
+      document.getElementById('selectModal').style.display = 'none';
+      document.getElementById('wishModal').style.display = 'flex';
+    }
+
+    function backToSelect() {
+      document.getElementById('wishModal').style.display = 'none';
+      document.getElementById('selectModal').style.display = 'flex';
+    }
+
+    function closeAllModals() {
+      document.getElementById('selectModal').style.display = 'none';
+      document.getElementById('wishModal').style.display = 'none';
+      if (allKrathongsData.length > 0) {
+        document.getElementById('riverActionBar').style.display = 'flex';
+      } else {
+        document.getElementById('welcomeScreen').style.display = 'flex';
+      }
+    }
+
+    function updateCharCount() {
+      const len = document.getElementById('userWish').value.length;
+      document.getElementById('charCount').innerText = len;
+    }
+
+    function submitKrathong() {
+      const name = document.getElementById('userName').value;
+      const wish = document.getElementById('userWish').value;
+      const btn = document.getElementById('submitFloatBtn');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังนำกระทงลงน้ำ...';
+
+      const payload = {
+        name: name,
+        wish: wish,
+        type: selectedKrathong.id
+      };
+
+      fetch(GAS_WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(res => {
+          btn.disabled = false;
+          btn.innerHTML = 'นำกระทงลงลอยน้ำ';
+
+          if (res.status === 'success') {
+            document.getElementById('wishModal').style.display = 'none';
+            document.getElementById('riverActionBar').style.display = 'flex';
+            document.getElementById('counterBadge').style.visibility = 'visible';
+
+            document.getElementById('userName').value = '';
+            document.getElementById('userWish').value = '';
+            updateCharCount();
+
+            document.getElementById('krathongCount').innerText = res.data.totalCount;
+            allKrathongsData.push(res.data);
+            spawnKrathongOnRiver(res.data, true);
+
+            Swal.fire({
+              icon: 'success',
+              title: 'ลอยกระทงสำเร็จ!',
+              text: 'ขอให้คำอธิษฐานของคุณสมปรารถนา ✨',
+              timer: 2200,
+              showConfirmButton: false
+            });
+          } else {
+            Swal.fire('เกิดข้อผิดพลาด', res.message || 'บันทึกไม่สำเร็จ', 'error');
+          }
+        })
+        .catch(() => {
+          btn.disabled = false;
+          btn.innerHTML = 'นำกระทงลงลอยน้ำ';
+          Swal.fire('เชื่อมต่อไม่สำเร็จ', 'กรุณาตรวจสอบ URL หรือสิทธิ์การเข้าถึง Web App', 'error');
+        });
+    }
+
+    function loadRiverData() {
+      fetch(`${GAS_WEB_APP_URL}?action=getKrathongs`)
+        .then(res => res.json())
+        .then(res => {
+          if (res.status !== 'success') return;
+          const data = res.data || [];
+          allKrathongsData = data;
+          const river = document.getElementById('riverArea');
+          river.innerHTML = '';
+
+          if (data.length > 0) {
+            document.getElementById('krathongCount').innerText = data[data.length - 1].totalCount;
+            data.forEach(item => spawnKrathongOnRiver(item, false));
+          }
+        })
+        .catch(err => console.error('Load error:', err));
+    }
+
+    function spawnKrathongOnRiver(item, isJustCreated) {
+      const river = document.getElementById('riverArea');
+      const kInfo = KRATHONG_LIST.find(k => k.id == item.type) || KRATHONG_LIST[0];
+
+      const el = document.createElement('div');
+      el.className = isJustCreated ? 'floating-krathong just-launched' : 'floating-krathong';
+
+      const posY = Number(item.posY) || 25;
+      const scale = Math.max(0.55, 1.18 - (posY / 100));
+      const duration = Math.floor(75 + (posY * 0.55) + (Math.random() * 15));
+      const delay = isJustCreated ? -(duration * 0.14) : -(Math.random() * duration);
+      const waveDelay = -(Math.random() * 5).toFixed(2);
+
+      el.style.bottom = `${posY}%`;
+      el.style.zIndex = Math.floor(100 - posY);
+      el.style.animationDuration = `${duration}s, 5s${isJustCreated ? ', 3.5s' : ''}`;
+      el.style.animationDelay = `${delay}s, ${waveDelay}s${isJustCreated ? ', 0s' : ''}`;
+
+      el.innerHTML = `
+        <div class="krathong-name-tag" style="transform: scale(${scale});">${escapeHtml(item.name)}</div>
+        <div class="krathong-wrapper">
+          <img src="${kInfo.img}" class="krathong-img" style="width: ${95 * scale}px;">
+          <div class="water-ripple"></div>
+          <div class="water-ripple delay-2"></div>
+        </div>
+      `;
+
+      el.onclick = function() {
+        Swal.fire({
+          title: `🪷 กระทงของ ${escapeHtml(item.name)}`,
+          html: `
+            <img src="${kInfo.img}" style="width:95px; margin-bottom:12px; filter: drop-shadow(0 0 12px rgba(255,215,0,0.6));">
+            <p class="fs-5 text-warning mb-2">"${escapeHtml(item.wish)}"</p>
+            <small class="text-light opacity-75">ลอยเมื่อ: ${item.timestamp || 'สักครู่ที่ผ่านมา'}</small>
+          `,
+          confirmButtonText: 'ปิดหน้าต่าง',
+          confirmButtonColor: '#F5A623'
+        });
+      };
+
+      river.appendChild(el);
+    }
+
+    function showAllWishes() {
+      if (allKrathongsData.length === 0) {
+        Swal.fire('ยังไม่มีกระทงในแม่น้ำ', 'มาร่วมลอยกระทงใบแรกกันเถอะ!', 'info');
+        return;
+      }
+
+      const listHtml = [...allKrathongsData].reverse().map(item => `
+        <div class="text-start p-2 mb-2 rounded" style="background: rgba(255,255,255,0.08); border-left: 3px solid #FFD700;">
+          <div class="fw-bold text-warning">🪷 ${escapeHtml(item.name)}</div>
+          <div class="small text-white mt-1">${escapeHtml(item.wish)}</div>
+        </div>
+      `).join('');
+
+      Swal.fire({
+        title: '📜 คำอธิษฐานในแม่น้ำ',
+        html: `<div style="max-height: 360px; overflow-y: auto; padding-right: 5px;">${listHtml}</div>`,
+        confirmButtonText: 'ปิด',
+        confirmButtonColor: '#F5A623',
+        width: 520
+      });
+    }
+
+    function toggleSound() {
+      const audio = document.getElementById('bgMusic');
+      const icon = document.getElementById('soundIcon');
+      if (isPlaying) {
+        audio.pause();
+        icon.className = 'fa-solid fa-volume-xmark text-warning';
+        isPlaying = false;
+      } else {
+        audio.play().catch(() => {});
+        icon.className = 'fa-solid fa-volume-high text-warning';
+        isPlaying = true;
+      }
+    }
+
+    function playMusicAuto() {
+      if (!isPlaying) {
+        const audio = document.getElementById('bgMusic');
+        audio.play().then(() => {
+          isPlaying = true;
+          document.getElementById('soundIcon').className = 'fa-solid fa-volume-high text-warning';
+        }).catch(() => {});
+      }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
