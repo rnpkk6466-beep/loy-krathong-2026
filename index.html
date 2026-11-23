@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090d27">
+<meta name="description" content="ร่วมลอยกระทงออนไลน์ ส่งคำอธิษฐานไปกับสายน้ำแห่งความทรงจำ">
+<title>MAGICAL LOY KRATHONG 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="sky">
+  <div class="moon"></div><div class="stars" id="stars"></div>
+  <div class="temple">✦</div>
+  <header class="topbar"><a class="brand" href="#">✧ MAGICAL <span>LOY KRATHONG</span></a><div class="top-actions"><span class="live-dot"></span><span>LIVE FESTIVAL</span><button id="soundBtn" class="icon-btn" aria-label="เปิดหรือปิดเสียง">♫</button></div></header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">✧ THE FESTIVAL OF LIGHT & WISHES ✧</div>
+      <h1>MAGICAL <span>LOY KRATHONG</span></h1>
+      <h2>ลอยกระทงออนไลน์ <i>คืนวันเพ็ญแห่งคำอธิษฐาน</i></h2>
+      <p class="intro">หนึ่งคำอธิษฐาน หนึ่งกระทง หนึ่งความทรงจำ<br>ร่วมสืบสานประเพณีไทยไปด้วยกัน</p>
+      <button class="primary-btn" id="openRegister">🪷 ร่วมลอยกระทงออนไลน์ <span>→</span></button>
+      <div class="stats">
+        <div><strong id="totalCount">—</strong><small>กระทงที่ลอยแล้ว</small></div>
+        <div class="stat-sep"></div>
+        <div><strong id="wishCount">—</strong><small>คำอธิษฐาน</small></div>
+        <div class="stat-sep"></div>
+        <div><strong id="todayCount">—</strong><small>ร่วมลอยวันนี้</small></div>
+      </div>
+    </section>
+    <section class="river-section">
+      <div class="river-heading"><span>✧ THE WISHING RIVER ✧</span><h3>สายน้ำแห่งคำอธิษฐาน</h3><p>ทุกกระทง คือหนึ่งความหวังที่กำลังเดินทาง</p></div>
+      <div class="river-wrap"><canvas id="riverCanvas" aria-label="แม่น้ำและกระทงลอย"></canvas><div class="river-glow"></div><div class="river-hint">แตะกระทงเพื่ออ่านคำอธิษฐาน</div></div>
+      <div class="wish-strip" id="wishStrip"><span>✧</span> คำอธิษฐานจะปรากฏที่นี่เมื่อมีผู้ร่วมกิจกรรม</div>
+    </section>
+    <section class="how"><div class="eyebrow">A LITTLE WISH, A LOT OF MAGIC</div><h3>ร่วมลอยกระทงง่าย ๆ ใน 3 ขั้นตอน</h3><div class="steps"><article><b>01</b><span>🪷</span><h4>เลือกกระทง</h4><p>เลือกกระทงดอกไม้ในแบบที่คุณชอบ</p></article><article><b>02</b><span>💫</span><h4>ส่งคำอธิษฐาน</h4><p>ฝากความปรารถนาดีไว้กับสายน้ำ</p></article><article><b>03</b><span>🌕</span><h4>ลอยไปพร้อมกัน</h4><p>กระทงของคุณจะปรากฏบนแม่น้ำทันที</p></article></div></section>
+  </main>
+  <footer>MAGICAL LOY KRATHONG 2026 <span>✧ สืบสานประเพณีไทยอย่างสร้างสรรค์ ✧</span></footer>
+</div>
+
+<div class="modal-backdrop" id="registerModal" aria-hidden="true">
+ <div class="modal">
+  <button class="close-btn" id="closeRegister" aria-label="ปิด">×</button>
+  <div class="eyebrow">MAKE A WISH TONIGHT</div><h3>ร่วมลอยกระทงออนไลน์</h3><p class="muted">เลือกกระทง ฝากคำอธิษฐาน แล้วปล่อยให้ความหวังลอยไป</p>
+  <form id="registerForm">
+   <label>ชื่อผู้ร่วมกิจกรรม <em>*</em><input name="name" maxlength="60" required placeholder="ชื่อของคุณ"></label>
+   <label>จังหวัด <input name="province" maxlength="80" placeholder="เช่น นนทบุรี"></label>
+   <label>เลือกกระทงของคุณ</label>
+   <div class="krathong-options">
+    <label class="kr-option selected"><input type="radio" name="type" value="pink" checked><span class="flower pink">✿</span><small>บัวชมพู</small></label>
+    <label class="kr-option"><input type="radio" name="type" value="white"><span class="flower white">✿</span><small>บัวขาว</small></label>
+    <label class="kr-option"><input type="radio" name="type" value="purple"><span class="flower purple">✿</span><small>บัวม่วง</small></label>
+    <label class="kr-option"><input type="radio" name="type" value="banana"><span class="flower banana">❀</span><small>ใบตอง</small></label>
+   </div>
+   <label>คำอธิษฐานของคุณ <textarea name="wish" maxlength="300" rows="3" placeholder="ขอให้ปีนี้..."></textarea></label>
+   <label class="checkline"><input type="checkbox" name="isPublic" checked> อนุญาตให้แสดงคำอธิษฐานบนสายน้ำ (ไม่แสดงจังหวัด)</label>
+   <button class="primary-btn submit-btn" type="submit" id="submitBtn">🪷 ยืนยันการลอยกระทง</button>
+   <p class="tiny-note">ข้อมูลของคุณใช้เพื่อร่วมกิจกรรมนี้เท่านั้น</p>
+  </form>
+ </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<iframe name="gasFrame" id="gasFrame" hidden></iframe>
+<script>window.MLK_CONFIG={API_URL:"https://script.google.com/macros/s/AKfycbyF2YvfdCRjk7DsyJxq_kQwsOe3hr_NYa4BOGJVbSsuf0fq9IJv3-2B1YnE3I2Cj1Ar/exec"};</script>
+<script src="assets/js/app.js"></script>
+</body></html>
